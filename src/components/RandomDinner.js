@@ -44,7 +44,7 @@ const RandomDinner = ({ recipes, user }) => {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${"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"}`,
+            Authorization: `Bearer ${""}`,
           },
           body: JSON.stringify({
             model: "gpt-3.5-turbo",

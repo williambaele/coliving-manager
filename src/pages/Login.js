@@ -1,21 +1,19 @@
 import React, { useState } from "react";
-import { useLogin } from "../hooks/useLogin";
 import Button from "../components/Button";
 import { Link } from "react-router-dom";
 
 function Login() {
   const [errormsg, setErrorMsg] = useState("");
-  const { login, error } = useLogin();
 
   //USER'S INFOS
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   //LOGIN METHOD
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    await login(email, password);
-  };
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault();
+  //   await login(email, password);
+  // };
 
   const [passwordVisibility, setPasswordVisibility] = useState(false);
   return (
@@ -26,7 +24,7 @@ function Login() {
         </div>
 
         <form
-          onSubmit={handleSubmit}
+          // onSubmit={handleSubmit}
           class="mx-auto mb-0 mt-8 max-w-md space-y-4"
         >
           <div>

@@ -1,6 +1,5 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
-import { useAuthContext } from "./hooks/useAuthContext";
 import { useRecipesContext } from "./hooks/useRecipesContext";
 import { useBillsContext } from "./hooks/useBillsContext";
 
@@ -9,12 +8,28 @@ import Login from "./pages/Login";
 import Home from "./pages/Home";
 import Signup from "./pages/Signup";
 
-function App() {
+//USER STATE
+import { getAuth, onAuthStateChanged } from "firebase/auth";
+import { AuthContextProvider } from "./context/AuthContext";
 
+function App() {
   //DISPATCH
   const { bills, dispatch: billsDispatch } = useBillsContext();
   const { recipes, dispatch: recipesDispatch } = useRecipesContext();
-  const { user } = useAuthContext();
+
+  //USER
+  const auth = getAuth();
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      setUser(user);
+    });
+
+    return () => {
+      unsubscribe();
+    };
+  }, [auth]);
 
   //RECIPES
   useEffect(() => {
@@ -49,19 +64,30 @@ function App() {
   }, [billsDispatch]);
   return (
     <>
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={!user ? <Login /> : <Home user={user} recipes={recipes} bills={bills}/>} />
-          <Route
-            path="/login"
-            element={!user ? <Login /> : <Navigate to="/" />}
-          />
-          <Route
-            path="/signup"
-            element={!user ? <Signup /> : <Navigate to="/" />}
-          />
-        </Routes>
-      </BrowserRouter>
+      <AuthContextProvider>
+        <BrowserRouter>
+          <Routes>
+            <Route
+              path="/"
+              element={
+                !user ? (
+                  <Login />
+                ) : (
+                  <Home user={user} recipes={recipes} bills={bills} />
+                )
+              }
+            />
+            <Route
+              path="/login"
+              element={!user ? <Login /> : <Navigate to="/" />}
+            />
+            <Route
+              path="/signup"
+              element={!user ? <Signup /> : <Navigate to="/" />}
+            />
+          </Routes>
+        </BrowserRouter>
+      </AuthContextProvider>
     </>
   );
 }

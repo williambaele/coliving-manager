@@ -1,25 +1,33 @@
 import React, { useState } from "react";
 import Button from "../components/Button";
-import { useSignup } from "../hooks/useSignup";
-import { Link } from "react-router-dom";
+import { UserAuth } from "../context/AuthContext";
+import { Link, useNavigate } from "react-router-dom";
 const Signup = () => {
-  const { signup, error, isLoading } = useSignup();
+  const { createUser } = UserAuth();
 
   // USER'S INFOS
   const [firstName, setFirstName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errormsg, setErrorMsg] = useState("");
+  const navigate = useNavigate();
 
   // SIGNUP METHOD
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setErrorMsg(""); // Clear any previous error message
+    setErrorMsg("");
     try {
-      await signup(email, firstName, password);
+      await createUser(email, password);
+      navigate("/");
     } catch (error) {
-      setErrorMsg("An error occurred during signup. Please try again.");
-      console.error(error);
+      console.log(error.code, error.message);
+      if (error.code === "auth/weak-password") {
+        setErrorMsg("Weak password (min 6 characters)");
+      } else if (error.code === "auth/email-already-in-use") {
+        setErrorMsg("Email already used");
+      } else {
+        setErrorMsg(error.message);
+      }
     }
   };
   return (
@@ -81,6 +89,11 @@ const Signup = () => {
             <Button message={"Sign up"} />
           </div>
         </form>
+        {errormsg && (
+                <p className="text-red-600 font-medium text-center text-xs">
+                  {errormsg}
+                </p>
+              )}
       </div>
     </div>
   );

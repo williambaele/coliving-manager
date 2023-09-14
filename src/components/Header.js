@@ -3,11 +3,8 @@ import { HiMiniChartPie } from "react-icons/hi2";
 import { HiBanknotes } from "react-icons/hi2";
 import { MdFastfood } from "react-icons/md";
 import { IoLogOut } from "react-icons/io5";
-import { useLogout } from "../hooks/useLogout";
 
 const Header = ({ activeMenu, setActiveMenu }) => {
-  // LOG OUT
-  const { logout } = useLogout();
 
   const menu = [
     {
@@ -38,7 +35,7 @@ const Header = ({ activeMenu, setActiveMenu }) => {
     setActiveMenu(name);
     if (name === "Logout") {
       // Perform logout action only when "Logout" is clicked
-      logout();
+      // logout();
     }
   };
 

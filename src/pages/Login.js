@@ -1,8 +1,11 @@
 import React, { useState } from "react";
 import Button from "../components/Button";
 import { Link } from "react-router-dom";
+import { UserAuth } from "../context/AuthContext";
 
 function Login() {
+  const { signIn } = UserAuth();
+
   const [errormsg, setErrorMsg] = useState("");
 
   //USER'S INFOS
@@ -10,10 +13,21 @@ function Login() {
   const [password, setPassword] = useState("");
 
   //LOGIN METHOD
-  // const handleSubmit = async (e) => {
-  //   e.preventDefault();
-  //   await login(email, password);
-  // };
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      await signIn(email, password);
+    } catch (error) {
+      console.log(error.code, error.message);
+      if (error.code === "auth/wrong-password") {
+        setErrorMsg("Wrong password");
+      } else if (error.code === "auth/user-not-found") {
+        setErrorMsg("User not found");
+      } else {
+        setErrorMsg(error.message);
+      }
+    }
+  };
 
   const [passwordVisibility, setPasswordVisibility] = useState(false);
   return (
@@ -24,7 +38,7 @@ function Login() {
         </div>
 
         <form
-          // onSubmit={handleSubmit}
+          onSubmit={handleSubmit}
           class="mx-auto mb-0 mt-8 max-w-md space-y-4"
         >
           <div>

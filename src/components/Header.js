@@ -3,9 +3,13 @@ import { HiMiniChartPie } from "react-icons/hi2";
 import { HiBanknotes } from "react-icons/hi2";
 import { MdFastfood } from "react-icons/md";
 import { IoLogOut } from "react-icons/io5";
+import { UserAuth } from "../context/AuthContext";
 
 const Header = ({ activeMenu, setActiveMenu }) => {
+  //LOGOUT
+  const { logout } = UserAuth();
 
+  //MENU LABELS
   const menu = [
     {
       icon: <HiMiniChartPie style={{ fontSize: 20, color: "white" }} />,
@@ -34,8 +38,8 @@ const Header = ({ activeMenu, setActiveMenu }) => {
   const handleMenuClick = (name) => {
     setActiveMenu(name);
     if (name === "Logout") {
-      // Perform logout action only when "Logout" is clicked
-      // logout();
+      logout();
+      console.log("You are logged out");
     }
   };
 

@@ -34,24 +34,29 @@ function App() {
   }, [auth]);
 
   //RECIPES
+  const recipesCollectionRef = collection(db, "recipes");
   useEffect(() => {
     const fetchRecipes = async () => {
-      const response = await fetch("/api/recipes");
-      const json = await response.json();
-
-      if (response.ok) {
-        recipesDispatch({ type: "SET_RECIPES", payload: json });
-      } else {
-        console.log("error");
+      try {
+        const querySnapshot = await getDocs(recipesCollectionRef);
+  
+        const recipesData = [];
+        querySnapshot.forEach((doc) => {
+          const recipe = doc.data();
+          recipesData.push(recipe);
+        });
+        recipesDispatch({ type: "SET_RECIPES", payload: recipesData });
+      } catch (error) {
+        console.error("Error fetching recipes:", error);
       }
     };
-
+  
     fetchRecipes();
   }, [recipesDispatch]);
+  
 
   //BILLS
 const billsCollectionRef = collection(db, "bills");
-
 useEffect(() => {
   const fetchBills = async () => {
     try {
@@ -59,7 +64,6 @@ useEffect(() => {
 
       const billsData = [];
       querySnapshot.forEach((doc) => {
-        // Assuming each document has a field named 'data'
         const bill = doc.data();
         billsData.push(bill);
       });

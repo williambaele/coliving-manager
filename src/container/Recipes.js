@@ -24,7 +24,6 @@ const Recipes = ({ user, recipes }) => {
             onClick={() => {
               setRandomMode(!randomMode);
               setFormVisibility(false);
-
             }}
           >
             <Button message={"Random"} icon={<BsFillDice5Fill />} />
@@ -45,11 +44,11 @@ const Recipes = ({ user, recipes }) => {
       {!randomMode ? (
         <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
           {recipes.map((recipe) => (
-            <RecipeCard recipe={recipe} user={user} />
+            <RecipeCard recipe={recipe} />
           ))}
         </div>
       ) : (
-        <RandomDinner recipes={recipes} user={user}/>
+        <RandomDinner recipes={recipes} user={user} />
       )}
     </div>
   );

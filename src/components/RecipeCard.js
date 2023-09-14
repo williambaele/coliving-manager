@@ -2,32 +2,23 @@ import React from "react";
 import { FaTrashCan } from "react-icons/fa6";
 import { useRecipesContext } from "../hooks/useRecipesContext";
 import { toast } from "react-toastify";
+import { db } from "../config/Firebase";
+import { deleteDoc, doc } from "firebase/firestore";
 
-const RecipeCard = ({ recipe, user }) => {
+const RecipeCard = ({ recipe }) => {
   const { dispatch } = useRecipesContext();
 
-  // DELETE RECIPE
-  const handleDeleteRecipe = async () => {
-    if (!user) {
-      console.log("You must be logged in");
-      return;
-    }
+  // DELETE ITEM
+  const deleteItem = async (id) => {
+    const recipeDoc = doc(db, "recipes", id);
+    await deleteDoc(recipeDoc);
+    dispatch({ type: "DELETE_RECIPE", payload: { _id: recipe._id } });
 
-    const response = await fetch(`/api/recipes/${recipe._id}`, {
-      method: "DELETE",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${user.token}`,
-      },
-    });
-
-    if (response.ok) {
-      dispatch({ type: "DELETE_RECIPE", payload: { _id: recipe._id } });
-      toast("Recipe deleted");
-    } else {
-      console.log("Error deleting the recipe.");
-    }
+    toast.error("Recipe deleted");
   };
+  
+
+  console.log(recipe)
 
   return (
     <div
@@ -35,7 +26,11 @@ const RecipeCard = ({ recipe, user }) => {
       className="bg-[#292929] rounded-xl px-2 py-2 text-sm font-bold text-gray-200 flex justify-between items-center"
     >
       <p>{recipe.title}</p>
-      <div onClick={handleDeleteRecipe}>
+      <div
+        onClick={() => {
+          deleteItem(recipe._id);
+        }}
+      >
         <FaTrashCan
           style={{ fontSize: 12, color: "white" }}
           className="cursor-pointer"

@@ -16,3 +16,9 @@ code {
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+
+:root {
+  --toastify-color-progress-dark: #7D3AF2 !important;
+}
+

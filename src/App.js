@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { useRecipesContext } from "./hooks/useRecipesContext";
 import { useBillsContext } from "./hooks/useBillsContext";
+import { db } from "./config/Firebase";
+import { collection, getDocs } from "firebase/firestore";
 
 //PAGES
 import Login from "./pages/Login";
@@ -48,20 +50,28 @@ function App() {
   }, [recipesDispatch]);
 
   //BILLS
-  useEffect(() => {
-    const fetchBills = async () => {
-      const response = await fetch("/api/bills");
-      const json = await response.json();
+const billsCollectionRef = collection(db, "bills");
 
-      if (response.ok) {
-        billsDispatch({ type: "SET_BILLS", payload: json });
-      } else {
-        console.log("error");
-      }
-    };
+useEffect(() => {
+  const fetchBills = async () => {
+    try {
+      const querySnapshot = await getDocs(billsCollectionRef);
 
-    fetchBills();
-  }, [billsDispatch]);
+      const billsData = [];
+      querySnapshot.forEach((doc) => {
+        // Assuming each document has a field named 'data'
+        const bill = doc.data();
+        billsData.push(bill);
+      });
+      billsDispatch({ type: "SET_BILLS", payload: billsData });
+    } catch (error) {
+      console.error("Error fetching bills:", error);
+    }
+  };
+
+  fetchBills();
+}, [billsDispatch]);
+
   return (
     <>
       <AuthContextProvider>

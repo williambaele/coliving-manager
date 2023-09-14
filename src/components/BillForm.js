@@ -1,70 +1,63 @@
 import React, { useState } from "react";
 import { toast } from "react-toastify";
 import { useBillsContext } from "../hooks/useBillsContext";
+import { db } from "../config/Firebase";
+import { collection, addDoc } from "firebase/firestore";
+import { getAuth } from "firebase/auth";
 
-const BillForm = ({ user, onCloseForm }) => {
+const BillForm = ({ onCloseForm }) => {
+    //USER ID
+    const auth = getAuth();
+    const user = auth.currentUser;
+    const uid = user.uid;
+  
+  
   //BILL'S INFOS
   const { dispatch } = useBillsContext();
 
   const [amount, setAmount] = useState("");
-  const [categorie, setCategorie] = useState("Gaz");
+  const [category, setCategory] = useState("Gaz");
   const [month, setMonth] = useState("January");
   const [error, setError] = useState(null);
   const [errorMsg, setErrorMsg] = useState("");
+  const [billUser] = useState(uid);
 
-  const handleSubmit = async (e) => {
+
+
+  //DB CONFIG
+  const billsCollectionRef = collection(db, "bills");
+  const createItem = async (
+    amount,
+    month,
+    category
+  ) => {
+    await addDoc(billsCollectionRef, {
+      amount: amount,
+      month: month,
+      category: category,
+      user_id: billUser,
+    });
+  };
+
+  const handleSubmit = (e) => {
     e.preventDefault();
-
-    //Checking if the user is logged in
-    if (!user) {
-      setError("You must be logged in");
-      return;
-    }
-
-    // Validate the title
-    if (amount === "" || amount == null) {
-      setError("amount");
-      setErrorMsg("Please enter a valid amount");
-      return;
-    }
-    if (month === "" || month == null) {
-      setError("month");
-      setErrorMsg("Please enter a valid month");
-      return;
-    }
-    if (categorie === "" || categorie == null) {
-      setError("categorie");
-      setErrorMsg("Please enter a valid categorie");
-      return;
-    }
-    //Adding data to the recipe's creation
-    const linkData = {
-      amount,
-      month,
-      categorie,
-      user: user._id,
-    };
-    const response = await fetch("/api/bills", {
-      method: "POST",
-      body: JSON.stringify(linkData),
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${user.token}`,
+    createItem(amount, month, category, billUser);
+    toast("Bill created");
+    
+    // Dispatch the correct action type "CREATE_BILL"
+    dispatch({
+      type: "CREATE_BILL",
+      payload: {
+        amount,
+        month,
+        category,
+        user_id: billUser,
       },
     });
-    const json = await response.json();
-
-    if (!response.ok) {
-      setError(json.error);
-      console.log("error");
-    }
-    if (response.ok) {
-      dispatch({ type: "CREATE_BILL", payload: json });
-      toast("Bill created");
-      onCloseForm();
-
-    }
+  
+    onCloseForm();
   };
+  
   return (
     <div className="w-full h-8 rounded-lg md:justify-end md:flex">
       <form
@@ -81,7 +74,7 @@ const BillForm = ({ user, onCloseForm }) => {
           }}
         />
         <select
-          onChange={(e) => setCategorie(e.target.value)}
+          onChange={(e) => setCategory(e.target.value)}
           className="col-span-2 bg-[#292929] text-gray-200"
         >
           <option>Gaz</option>

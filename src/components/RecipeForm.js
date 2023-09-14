@@ -1,54 +1,48 @@
 import React, { useState } from "react";
 import { useRecipesContext } from "../hooks/useRecipesContext";
 import { toast } from "react-toastify";
+import { collection, addDoc } from "firebase/firestore";
+import { db } from "../config/Firebase";
+import { getAuth } from "firebase/auth";
 
-const RecipeForm = ({ user, onCloseForm }) => {
+const RecipeForm = ({ onCloseForm }) => {
   //RECIPE'S INFOS
   const [title, setTitle] = useState("");
   const [error, setError] = useState(null);
   const { dispatch } = useRecipesContext();
   const [errorMsg, setErrorMsg] = useState("");
 
-  const handleSubmit = async (e) => {
+   //USER ID
+   const auth = getAuth();
+   const user = auth.currentUser;
+   const uid = user.uid; 
+   const [recipeUser] = useState(uid);
+
+  //DB CONFIG
+  const recipesCollectionRef = collection(db, "recipes");
+  const createItem = async (
+    title,
+
+  ) => {
+    await addDoc(recipesCollectionRef, {
+      title: title,
+      user_id: recipeUser,
+    });
+  };
+
+  const handleSubmit = (e) => {
     e.preventDefault();
-
-    //Checking if the user is logged in
-    if (!user) {
-      setError("You must be logged in");
-      return;
-    }
-
-    // Validate the title
-    if (title === "" || title == null) {
-      setError("title");
-      setErrorMsg("Please enter a valid title");
-      return;
-    }
-    //Adding data to the recipe's creation
-    const linkData = {
-      title,
-      user: user._id,
-    };
-    const response = await fetch("/api/recipes", {
-      method: "POST",
-      body: JSON.stringify(linkData),
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${user.token}`,
+    createItem(title, recipeUser);
+    toast("Recipe created");
+    dispatch({
+      type: "CREATE_RECIPE",
+      payload: {
+        title,
+        user_id: recipeUser,
       },
     });
-    const json = await response.json();
-
-    if (!response.ok) {
-      setError(json.error);
-      console.log("error");
-    }
-    if (response.ok) {
-      dispatch({ type: "CREATE_RECIPE", payload: json });
-      toast("Recipe created");
-      setTitle("");
-      onCloseForm();
-    }
+  
+    onCloseForm();
   };
 
   return (

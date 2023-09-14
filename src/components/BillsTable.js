@@ -2,36 +2,35 @@ import React from "react";
 import PaidButton from "./PaidButton";
 import MissingAmount from "./MissingAmount";
 
-const BillsTable = ({ bills, user }) => {
+const BillsTable = ({ bills }) => {
   const tableHeadings = ["Category", "Month", "Amount", "Missing"];
-
   return (
-    <div class="overflow-x-auto">
-      <table class="min-w-full divide-y-2 divide-gray-600 bg-[#292929] rounded-xl text-sm">
-        <thead class="text-left">
-          <tr className="py-10">
+    <div class="overflow-x-auto overflow-y-auto h-max">
+      <table class="divide-y-2 w-full divide-gray-600 bg-[#292929] text-sm rounded-xl">
+        <thead class="text-left text-md sticky top-0  rounded-xl">
+          <tr>
             {tableHeadings.map((item) => (
-              <th class="whitespace-nowrap px-4 py-2 uppercase text-gray-300 font-bold">
+              <th class="whitespace-nowrap px-4 uppercase text-gray-300 font-bold py-4">
                 {item}
               </th>
             ))}
-            <th class="px-4 py-2"></th>
+            <th class="px-4 py-4"></th>
           </tr>
         </thead>
 
-        <tbody class="divide-y divide-gray-200 text-gray-400">
+        <tbody class="divide-y divide-gray-200 text-gray-400 text-sm">
           {bills.map((bill) => (
-            <tr>
-              <td class="whitespace-nowrap px-4 py-2 font-medium ">
-                {bill.categorie}
+            <tr className="py-2">
+              <td class="whitespace-nowrap px-4 py-4 font-medium ">
+                {bill.category}
               </td>
-              <td class="whitespace-nowrap px-4 py-2 ">{bill.month}</td>
-              <td class="whitespace-nowrap px-4 py-2 ">{bill.amount}€</td>
-              <td class="whitespace-nowrap px-4 py-2 ">
-                <MissingAmount bill={bill} />
+              <td class="whitespace-nowrap px-4 py-4 ">{bill.month}</td>
+              <td class="whitespace-nowrap px-4 py-4 ">{bill.amount}€</td>
+              <td class="whitespace-nowrap px-4 py-4 ">
+                {/* <MissingAmount bill={bill} /> */}
               </td>
-              <td class="whitespace-nowrap px-4 py-2 flex justify-center">
-                <PaidButton user={user} bill={bill} />
+              <td class="whitespace-nowrap px-4 py-4 flex justify-center">
+                {/* <PaidButton user={user} bill={bill} /> */}
               </td>
             </tr>
           ))}

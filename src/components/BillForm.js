@@ -6,12 +6,11 @@ import { collection, addDoc } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
 
 const BillForm = ({ onCloseForm }) => {
-    //USER ID
-    const auth = getAuth();
-    const user = auth.currentUser;
-    const uid = user.uid;
-  
-  
+  //USER ID
+  const auth = getAuth();
+  const user = auth.currentUser;
+  const uid = user.uid;
+
   //BILL'S INFOS
   const { dispatch } = useBillsContext();
 
@@ -22,15 +21,9 @@ const BillForm = ({ onCloseForm }) => {
   const [errorMsg, setErrorMsg] = useState("");
   const [billUser] = useState(uid);
 
-
-
   //DB CONFIG
   const billsCollectionRef = collection(db, "bills");
-  const createItem = async (
-    amount,
-    month,
-    category
-  ) => {
+  const createItem = async (amount, month, category) => {
     await addDoc(billsCollectionRef, {
       amount: amount,
       month: month,
@@ -43,7 +36,7 @@ const BillForm = ({ onCloseForm }) => {
     e.preventDefault();
     createItem(amount, month, category, billUser);
     toast("Bill created");
-    
+
     // Dispatch the correct action type "CREATE_BILL"
     dispatch({
       type: "CREATE_BILL",
@@ -54,10 +47,10 @@ const BillForm = ({ onCloseForm }) => {
         user_id: billUser,
       },
     });
-  
+
     onCloseForm();
   };
-  
+
   return (
     <div className="w-full h-8 rounded-lg md:justify-end md:flex">
       <form
@@ -79,6 +72,7 @@ const BillForm = ({ onCloseForm }) => {
         >
           <option>Gaz</option>
           <option>Water</option>
+          <option>Electricity</option>
         </select>
         <select
           onChange={(e) => setMonth(e.target.value)}

@@ -28,7 +28,7 @@ const Bills = ({ user, bills }) => {
       {formVisibility ? (
         <BillForm user={user} onCloseForm={handleCloseForm} />
       ) : null}
-      <BillsTable bills={bills} user={user}/>
+      <BillsTable bills={bills} user={user} />
     </div>
   );
 };

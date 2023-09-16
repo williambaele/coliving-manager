@@ -4,11 +4,20 @@ import ReactEcharts from "echarts-for-react";
 export default function Charts() {
   const option = {
     title: {
-      text: "Hi",
+      text: "Lorem ipsum",
       textStyle: {
         fontSize: 30,
         color: "#7D3AF2",
       },
+    },
+    tooltip: {
+      trigger: "axis",
+      axisPointer: {
+        type: "shadow",
+      },
+    },
+    grid: {
+      width: "auto",
     },
     xAxis: {
       type: "category",
@@ -36,6 +45,7 @@ export default function Charts() {
         type: "bar",
       },
     ],
+    color: ["#7D3AF2"],
   };
   return (
     <>

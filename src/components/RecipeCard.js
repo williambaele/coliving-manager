@@ -16,9 +16,6 @@ const RecipeCard = ({ recipe }) => {
 
     toast.error("Recipe deleted");
   };
-  
-
-  console.log(recipe)
 
   return (
     <div

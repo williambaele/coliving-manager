@@ -14,7 +14,7 @@ const Recipes = ({ user, recipes }) => {
   const [formVisibility, setFormVisibility] = useState(false);
   const [randomMode, setRandomMode] = useState(false);
   return (
-    <div className="w-full h-[calc(100vh-56px)] bg-[#191919] px-4 py-4 md:py-6 space-y-6 md:space-y-10">
+    <div className="w-full h-full bg-[#191919] px-4 py-4 md:py-6 space-y-6 md:space-y-10">
       <div className="flex justify-between">
         <h2 className="text-2xl font-bold text-gray-300 md:text-4xl font-large">
           Recipes

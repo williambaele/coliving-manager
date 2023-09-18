@@ -1,7 +1,7 @@
 import React from "react";
 import ReactEcharts from "echarts-for-react";
 
-export default function Charts() {
+export default function Charts({ bills }) {
   const option = {
     title: {
       text: "Lorem ipsum",

@@ -4,7 +4,7 @@ import { HiBanknotes } from "react-icons/hi2";
 import { MdFastfood } from "react-icons/md";
 import { IoLogOut } from "react-icons/io5";
 import { UserAuth } from "../context/AuthContext";
-
+import { Link } from "react-router-dom";
 const Header = ({ activeMenu, setActiveMenu }) => {
   //LOGOUT
   const { logout } = UserAuth();
@@ -47,7 +47,9 @@ const Header = ({ activeMenu, setActiveMenu }) => {
     <div
       className={`hidden md:flex w-full bg-[#121213] h-14 justify-between items-center px-4`}
     >
-      <h2 className="text-xl font-bold text-gray-300">🏠</h2>
+      <Link href="/">
+        <h2 className="text-xl font-bold text-gray-300">🏠</h2>
+      </Link>
       <div className={`w-60 items-center h-full`} style={gridStyle}>
         {menu.map((item, index) => (
           <div

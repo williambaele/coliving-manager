@@ -4,10 +4,9 @@ import MissingAmount from "./MissingAmount";
 
 const BillsTable = ({ bills }) => {
   const tableHeadings = ["Category", "Month", "Amount", "Missing"];
-  console.log(bills)
 
   return (
-    <div class="overflow-x-auto overflow-y-auto h-max">
+    <div class="overflow-y-auto">
       <table class="divide-y-2 w-full divide-gray-600 bg-[#292929] text-sm rounded-xl">
         <thead class="text-left text-md sticky top-0  rounded-xl">
           <tr>

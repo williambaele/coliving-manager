@@ -17,6 +17,7 @@ const BillForm = ({ onCloseForm }) => {
   const [amount, setAmount] = useState("");
   const [category, setCategory] = useState("Gaz");
   const [month, setMonth] = useState("January");
+  const [paidBy, setPaidBy] = useState([]);
   const [error, setError] = useState(null);
   const [errorMsg, setErrorMsg] = useState("");
   const [billUser] = useState(uid);
@@ -29,6 +30,7 @@ const BillForm = ({ onCloseForm }) => {
       month: month,
       category: category,
       user_id: billUser,
+      paidBy: [],
     });
   };
 
@@ -42,6 +44,7 @@ const BillForm = ({ onCloseForm }) => {
       type: "CREATE_BILL",
       payload: {
         amount,
+        paidBy,
         month,
         category,
         user_id: billUser,

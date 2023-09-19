@@ -2,13 +2,13 @@ import React from "react";
 import PaidButton from "./PaidButton";
 import MissingAmount from "./MissingAmount";
 
-const BillsTable = ({ bills }) => {
+const BillsTable = ({ bills, user }) => {
   const tableHeadings = ["Category", "Month", "Amount", "Missing"];
 
   return (
-    <div class="overflow-y-auto">
+    <div class="bg-red-200 h-full">
       <table class="divide-y-2 w-full divide-gray-600 bg-[#292929] text-sm rounded-xl">
-        <thead class="text-left text-md sticky top-0  rounded-xl">
+        <thead class="text-left text-md sticky top-0 rounded-xl">
           <tr>
             {tableHeadings.map((item) => (
               <th class="whitespace-nowrap px-4 uppercase text-gray-300 font-bold py-4">

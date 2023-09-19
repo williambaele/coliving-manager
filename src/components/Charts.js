@@ -1,7 +1,7 @@
 import React from "react";
 import ReactEcharts from "echarts-for-react";
 
-export default function Charts({ bills }) {
+export default function Charts({ bills, name }) {
   // Extract the data from the bills prop and convert amount to numbers
   const data =
     bills && Array.isArray(bills)
@@ -30,7 +30,7 @@ export default function Charts({ bills }) {
 
   const option = {
     title: {
-      text: "Gaz",
+      text: { name },
       textStyle: {
         fontSize: 30,
         color: "#7D3AF2",

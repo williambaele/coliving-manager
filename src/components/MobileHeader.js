@@ -5,7 +5,6 @@ import { MdFastfood } from "react-icons/md";
 import { IoLogOut } from "react-icons/io5";
 
 const MobileHeader = ({ activeMenu, setActiveMenu }) => {
-
   const menu = [
     {
       icon: <HiMiniChartPie style={{ fontSize: 20, color: "white" }} />,
@@ -31,7 +30,6 @@ const MobileHeader = ({ activeMenu, setActiveMenu }) => {
     gridTemplateColumns: `repeat(${gridColumns}, minmax(0, 1fr))`,
   };
 
-
   const handleMenuClick = (name) => {
     setActiveMenu(name);
     if (name === "Logout") {
@@ -42,7 +40,7 @@ const MobileHeader = ({ activeMenu, setActiveMenu }) => {
 
   return (
     <div
-      className={`w-full bg-[#121213] h-14 absolute bottom-0 left-0 right-0 items-center`}
+      className={`w-full bg-[#121213] h-14 absolute bottom-0 left-0 right-0 items-center z-10`}
       style={gridStyle}
     >
       {menu.map((item, index) => (

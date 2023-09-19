@@ -3,15 +3,19 @@ import PaidButton from "./PaidButton";
 import MissingAmount from "./MissingAmount";
 
 const BillsTable = ({ bills, user }) => {
+  console.log(bills);
   const tableHeadings = ["Category", "Month", "Amount", "Missing"];
 
   return (
-    <div class="bg-red-200 h-full">
-      <table class="divide-y-2 w-full divide-gray-600 bg-[#292929] text-sm rounded-xl">
-        <thead class="text-left text-md sticky top-0 rounded-xl">
+    <div
+      style={{ height: "calc(100% - 100px)" }}
+      class="bg-red-200 overflow-y-scroll"
+    >
+      <table class="w-full divide-gray-600 bg-[#292929] text-sm rounded-xl">
+        <thead class="text-left text-md rounded-xl sticky top-0 z-10 bg-[#121213] rounded-t-xl">
           <tr>
             {tableHeadings.map((item) => (
-              <th class="whitespace-nowrap px-4 uppercase text-gray-300 font-bold py-4">
+              <th class="px-4 py-4 uppercase text-gray-300 font-bold">
                 {item}
               </th>
             ))}
@@ -20,8 +24,8 @@ const BillsTable = ({ bills, user }) => {
         </thead>
 
         <tbody class="divide-y divide-gray-200 text-gray-400 text-sm">
-          {bills.map((bill) => (
-            <tr className="py-2">
+          {bills.map((bill, index) => (
+            <tr key={index} className="py-2">
               <td class="whitespace-nowrap px-4 py-4 font-medium ">
                 {bill.category}
               </td>

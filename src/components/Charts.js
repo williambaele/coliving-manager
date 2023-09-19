@@ -30,7 +30,7 @@ export default function Charts({ bills, name }) {
 
   const option = {
     title: {
-      text: { name },
+      text: name,
       textStyle: {
         fontSize: 30,
         color: "#7D3AF2",

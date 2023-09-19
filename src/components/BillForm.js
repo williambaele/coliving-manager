@@ -52,7 +52,7 @@ const BillForm = ({ onCloseForm }) => {
   };
 
   return (
-    <div className="w-full h-8 rounded-lg md:justify-end md:flex">
+    <div className="z-50 w-full h-8 rounded-lg md:justify-end md:flex">
       <form
         onSubmit={handleSubmit}
         className="grid w-full h-full grid-cols-7 md:w-1/2"

@@ -13,6 +13,7 @@ import Signup from "./pages/Signup";
 //USER STATE
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { AuthContextProvider } from "./context/AuthContext";
+import Lorem from "./pages/Lorem";
 
 function App() {
   //DISPATCH
@@ -39,7 +40,7 @@ function App() {
     const fetchRecipes = async () => {
       try {
         const querySnapshot = await getDocs(recipesCollectionRef);
-  
+
         const recipesData = [];
         querySnapshot.forEach((doc) => {
           const recipe = doc.data();
@@ -50,31 +51,30 @@ function App() {
         console.error("Error fetching recipes:", error);
       }
     };
-  
+
     fetchRecipes();
   }, [recipesDispatch]);
-  
 
   //BILLS
-const billsCollectionRef = collection(db, "bills");
-useEffect(() => {
-  const fetchBills = async () => {
-    try {
-      const querySnapshot = await getDocs(billsCollectionRef);
+  const billsCollectionRef = collection(db, "bills");
+  useEffect(() => {
+    const fetchBills = async () => {
+      try {
+        const querySnapshot = await getDocs(billsCollectionRef);
 
-      const billsData = [];
-      querySnapshot.forEach((doc) => {
-        const bill = doc.data();
-        billsData.push(bill);
-      });
-      billsDispatch({ type: "SET_BILLS", payload: billsData });
-    } catch (error) {
-      console.error("Error fetching bills:", error);
-    }
-  };
+        const billsData = [];
+        querySnapshot.forEach((doc) => {
+          const bill = doc.data();
+          billsData.push(bill);
+        });
+        billsDispatch({ type: "SET_BILLS", payload: billsData });
+      } catch (error) {
+        console.error("Error fetching bills:", error);
+      }
+    };
 
-  fetchBills();
-}, [billsDispatch]);
+    fetchBills();
+  }, [billsDispatch]);
 
   return (
     <>
@@ -99,6 +99,7 @@ useEffect(() => {
               path="/signup"
               element={!user ? <Signup /> : <Navigate to="/" />}
             />
+            <Route path="/lorem" element={<Lorem />} />
           </Routes>
         </BrowserRouter>
       </AuthContextProvider>
